@@ -150,7 +150,7 @@ Proyek ini berlisensi MIT — bebas digunakan untuk tujuan pribadi atau komersia
 
 ---
 
-# ✅ **2. CONTRIBUTING.md (Profesional + Standar Pi Developer)**
+# ✅ **2. CONTRIBUTING.md 
 
 ```md
 # Contributing Guidelines
