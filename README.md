@@ -58,7 +58,33 @@ Proyek mengikuti **Pi Platform Developer Guidelines** serta praktik terbaik indu
 
 ## 🏗 Struktur Direktori
 
-pi-commerce-gateway/ │── frontend/ │   ├── src/ │   │   ├── App.jsx │   │   ├── components/ │   │   └── services/pi-sdk.js │   ├── index.html │   └── package.json │ │── backend/ │   ├── app/ │   │   └── Http/Controllers/PurchaseOrderController.php │   ├── database/migrations/ │   ├── routes/api.php │   └── composer.json │ │── docs/ │   ├── architecture.md │   ├── SECURITY.md │   └── CONTRIBUTING.md │ │── infra/ │   ├── Dockerfile │   └── nginx.conf │ ├── logo.png ├── LICENSE └── README.md
+/project-root
+│  README.md
+│  CONTRIBUTING.md
+│  SECURITY.md
+│  CODE_OF_CONDUCT.md
+│  LICENSE
+│
+├── backend/
+│     ├── src/
+│     ├── tests/
+│     └── Dockerfile
+│
+├── frontend/
+│     ├── src/
+│     ├── public/
+│     └── package.json
+│
+├── docs/
+│     ├── architecture.md
+│     ├── api-reference.md
+│     └── use-case.md
+│
+├── .github/
+│     ├── ISSUE_TEMPLATE/
+│     └── workflows/
+│           ├── ci.yml
+│           └── security-scan.yml
 
 ---
 
