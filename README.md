@@ -1,4 +1,11 @@
-<!-- README.md -->
+# PiCommerce Gateway
+
+![Release](https://img.shields.io/github/v/release/Clawue884/PiCommerce-Gateway?include_prereleases)
+![Status](https://img.shields.io/badge/status-alpha-yellow)
+![License](https://img.shields.io/github/license/Clawue884/PiCommerce-Gateway)
+![Build](https://img.shields.io/github/actions/workflow/status/Clawue884/PiCommerce-Gateway/build.yml)
+
+> Official Open Source Payment Gateway for Pi Network Ecosystem.
 
 # PiCommerce Gateway
 
