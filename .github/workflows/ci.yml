@@ -1,0 +1,25 @@
+name: CI Build & Test
+
+on:
+  push:
+    branches: [ dev ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Backend Dependencies
+        run: cd backend && composer install
+
+      - name: Install Frontend Dependencies
+        run: cd frontend && npm install
+
+      - name: Run PHP tests
+        run: cd backend && php artisan test
+
+      - name: Run JS Tests
+        run: cd frontend && npm test
