@@ -1,284 +1,236 @@
 ---
 
-# PiCommerce Gateway  
-### Enterprise-Ready Payment Gateway for Pi Apps  
-Integrasi Pi SDK | Laravel API | React + Vite | Webhook HMAC | Audit Log
+
+# PiCommerce Gateway
+
+### 🚀 Enterprise-Ready Payment Gateway for Pi Network Applications  
+**Laravel 10 + React + Pi SDK + Webhook HMAC + CI/CD + Audit Trail**
 
 ---
 
 ## 🧭 Ringkasan Proyek
-**PiCommerce Gateway** adalah sistem pembayaran enterprise untuk aplikasi Pi Network yang menggunakan Pi SDK.  
-Proyek ini menyediakan alur pembayaran end-to-end:
 
-- Pembuatan Purchase Order (PO)
-- Proses pembayaran Pi (A2U Payment)
-- Verifikasi Webhook aman berbasis HMAC
-- Penyelesaian PO otomatis
-- Logging transaksi & audit trail
-- Standar keamanan setara aplikasi finansial modern
+**PiCommerce Gateway** adalah *payment layer resmi open-source* yang dirancang untuk aplikasi dalam ekosistem **Pi Network**.
 
-Proyek mengikuti **Pi Platform Developer Guidelines** serta praktik terbaik industri.
+Sistem ini menyediakan alur pembayaran lengkap menggunakan **Pi SDK** dan standard **A2U Payment Flow**, mencakup:
 
----
+- Manajemen Purchase Order (PO)
+- Otorisasi & verifikasi pembayaran
+- Webhook signature HMAC SHA256
+- Logging transaksi dan audit trail
+- Dashboard admin terintegrasi
+- CI/CD untuk build, test, security scanning & auto release
 
-## ⭐ Fitur Kelas Enterprise
-
-### ✔ Purchase Order (PO) System  
-- Status otomatis: `created → pending → paid → settled`  
-- ID unik (`merchantRef`) per transaksi  
-- Validasi & anti-replay
-
-### ✔ A2U Payment (Pi SDK)  
-- Menggunakan SDK resmi Pi Browser  
-- Integrasi React wrapper yang bersih  
-- Mendukung pembayaran direct dan via PO
-
-### ✔ Webhook Aman (HMAC SHA256)  
-- Verifikasi signature: `X-Pi-Signature`  
-- Sanitasi payload  
-- Anti replay + rate limiting
-
-### ✔ Frontend React (Vite)  
-- Ringan dan cepat  
-- Siap langsung berjalan di Pi Browser  
-- Wrapper SDK aman & minimal
-
-### ✔ Backend Laravel 10  
-- API bersih dengan controller modular  
-- Validasi request ketat  
-- Audit log (dibangun di middleware)
-
-### ✔ Infrastruktur Modern  
-- Docker-ready  
-- Struktur clean architecture  
-- CI/CD friendly  
-- Dokumentasi lengkap
+Proyek ini mengikuti **Pi Platform Developer Guidelines** serta prinsip keamanan fintech modern.
 
 ---
 
-## 🏗 Struktur Direktori
+## ⭐ Fitur Utama
 
-/project-root
-│  README.md
-│  CONTRIBUTING.md
-│  SECURITY.md
-│  CODE_OF_CONDUCT.md
-│  LICENSE
-│
-├── backend/
-│     ├── src/
-│     ├── tests/
-│     └── Dockerfile
-│
-├── frontend/
-│     ├── src/
-│     ├── public/
-│     └── package.json
-│
-├── docs/
-│     ├── architecture.md
-│     ├── api-reference.md
-│     └── use-case.md
-│
-├── .github/
-│     ├── ISSUE_TEMPLATE/
-│     └── workflows/
-│           ├── ci.yml
-│           └── security-scan.yml
+| Fitur | Status |
+|-------|--------|
+| A2U Payment Integration | ✅ |
+| Purchase Order System | ✅ |
+| Secure Webhook (HMAC SHA256) | ✅ |
+| React Frontend + Vite | ✅ |
+| Laravel 10 API Backend | ✅ |
+| Audit Logging | 🚧 |
+| CI/CD Pipeline (GitHub Actions) | 🚧 |
+| Admin Dashboard | 🚧 |
+| Semantic Versioning + Auto Release | 🚧 |
+| Plugin Mode / Extend API | 🚧 |
 
 ---
 
-## 🧰 Teknologi yang Digunakan
-- Pi SDK (Pi App Platform)  
-- React + Vite  
-- Laravel 10 (PHP 8+)  
-- MySQL / MariaDB  
-- Docker & Nginx  
-- Node 18+  
+## 🏗 Arsitektur Sistem
+
+Frontend (React + Pi SDK) ↓ REST API (Laravel 10) ↓ Webhook HMAC Verification ↓ Database (MySQL/MariaDB) ↓ Audit Log + Event Bus
+
+Dokumentasi lengkap di:  
+📄 `docs/architecture.md`  
+📄 `docs/api-reference.yml`  
 
 ---
 
-## 📡 Cara Install
+## 📡 Instalasi
 
-### 1. Frontend
-```bash
-cd frontend
-npm install
-npm run dev
+### 1️⃣ Clone Repository
 
-2. Backend
+```sh
+git clone https://github.com/Clawue884/-PiCommerce-Gateway
+cd -PiCommerce-Gateway
+
+
+---
+
+2️⃣ Install Backend (Laravel)
 
 cd backend
 composer install
+cp .env.example .env
 php artisan migrate
 php artisan serve
 
 
 ---
 
-🔐 Keamanan Singkat
+3️⃣ Install Frontend (React + Vite)
 
-HTTPS wajib
-
-HMAC verification
-
-Sanitasi input
-
-Tidak menyimpan credential di localStorage
-
-CSP & rate-limiting
-
-Audit log
+cd frontend
+npm install
+npm run dev
 
 
-Detail lengkap ada di SECURITY.md
+---
+
+🔐 Keamanan
+
+Proyek menggunakan model Zero Trust + Defense-In-Depth.
+
+Keamanan mencakup:
+
+HTTPS Only
+
+Anti-replay timestamp
+
+Webhook signature validation
+
+CSP strict mode
+
+NO sensitive data stored locally
+
+
+Detail lengkap: SECURITY.md
+
+> ⚠️ Catatan Penting:
+Proyek ini tidak mengklaim harga Pi, tidak menetapkan nilai fiat, dan hanya memproses transaksi melalui Pi App Platform resmi.
+
+
+
+
+---
+
+🧪 Testing
+
+Layer	Framework
+
+Backend	PHPUnit / Pest
+Frontend	Jest / Vitest
+Integration	Playwright
+Security	Bandit + Secret Scanner
+
+
+Jalankan:
+
+npm test
+php artisan test
+
+
+---
+
+⚙️ CI/CD
+
+Pipeline mencakup:
+
+Build
+
+Lint
+
+Unit Test
+
+Secret Scan
+
+Security Audit
+
+Auto-Release (Semantic Versioning)
+
+
+Workflow ada di:
+
+.github/workflows/ci.yml
+.github/workflows/release.yml
+
+
+---
+
+🧰 Teknologi yang Digunakan
+
+Pi SDK (Official)
+
+React + Vite
+
+Laravel 10 + PHP 8.1+
+
+MySQL / MariaDB
+
+Docker + Nginx
+
+Github Actions CI/CD
+
 
 
 ---
 
 🤝 Kontribusi
 
-Lihat CONTRIBUTING.md.
+Kontribusi terbuka untuk developer Pi Network.
 
+Silakan baca:
 
----
+CONTRIBUTING.md
 
-📘 Lisensi
+CODE_OF_CONDUCT.md
 
-Proyek ini berlisensi MIT — bebas digunakan untuk tujuan pribadi atau komersial.
-
-
----
-
-# ✅ **2. CONTRIBUTING.md 
-
-```md
-# Contributing Guidelines
-
-Terima kasih atas minat Anda berkontribusi pada **PiCommerce Gateway**.  
-Proyek ini mengikuti standar industri dan pedoman Developer Pi Network.
-
----
-
-## 🧱 Prinsip Utama Kontribusi
-1. Keamanan adalah prioritas utama  
-2. Tidak ada klaim harga, nilai, atau spekulasi Pi  
-3. Kode harus bersih, modular, dan dapat diuji  
-4. Semua perubahan harus mengikuti arsitektur proyek  
-5. Dokumentasi wajib untuk setiap PR
-
----
-
-## 🛠 Cara Berkontribusi
-### 1. Fork repository
-### 2. Buat branch baru
-
-git checkout -b feature/nama-fitur
-
-### 3. Buat perubahan dan commit
-
-git commit -m "Menambahkan fitur X"
-
-### 4. Push dan buat Pull Request
-Ikuti template PR yang telah disediakan.
-
----
-
-## 🧪 Standar Kode
-### Backend (Laravel)
-- PSR-12  
-- Validasi request menggunakan FormRequest  
-- Tidak ada query non-prepared  
-- Gunakan service layer bila perlu  
-
-### Frontend (React)
-- Hindari state global yang tidak perlu  
-- Pi SDK hanya dipanggil via wrapper `pi-sdk.js`  
-- Jangan memuat library tidak aman  
-
----
-
-## 🔐 Keamanan & Compliance
-Kontribusi ditolak jika:
-- Mengandung klaim harga Pi  
-- Mengubah mekanisme signature  
-- Melanggar standar Pi App Platform  
-
----
-
-## 📄 Dokumentasi
-Semua fitur baru *wajib* menambah atau memperbarui:
-- README.md  
-- docs/architecture.md  
-- Comment pada kode  
-
----
-
-Terima kasih telah membantu membangun ekosistem Pi!
 
 
 ---
 
-✅ 3. SECURITY.md (Standar Keamanan Lengkap)
+📌 Roadmap
 
-# Security Policy
+Tahap	Status
 
-Keamanan adalah fondasi utama PiCommerce Gateway.
+v1.0 — Payment Core	🟢 Rilis
+v1.2 — Dashboard Admin	🟡 On Development
+v2.0 — Plugin API + Multi-Merchant	🔵 Planned
 
----
 
-## 🔐 Prinsip Keamanan
-- Defense in Depth  
-- Zero Trust Model  
-- No sensitive data at rest  
-- Semua endpoint divalidasi  
 
 ---
 
-## 🧩 Bagian yang Dilindungi
+📄 Lisensi
 
-### 1. Webhook
-- Verifikasi HMAC SHA256  
-- Header wajib: `X-Pi-Signature`  
-- Timestamp validation untuk anti-replay  
+Proyek dirilis di bawah lisensi:
 
-### 2. Backend Laravel
-- Prepared statements  
-- Rate limiting (5 req/detik)  
-- CSRF (untuk non-API)  
-- Sanitasi input dan output  
+MIT License — Free for Personal and Commercial Use
 
-### 3. Frontend React
-- Tidak menyimpan credential/token  
-- CSP ketat  
-- HTTPS-only  
-- Pi SDK dari domain resmi  
-
-### 4. Infrastruktur
-- Docker minimal privilege  
-- Nginx security headers  
-- Logging & audit trail  
 
 ---
 
-## 🚨 Melaporkan Kerentanan
-Laporkan melalui email:
+⭐ Status Proyek
 
-security@picommerce.dev
+> Stage: Public Beta
+Community-maintained and actively improving.
 
-Berikan:
-- Deskripsi masalah  
-- Cara reproduksi  
-- Dampak potensial  
-- Saran mitigasi  
+
+
 
 ---
 
-## 📌 Catatan penting
-Proyek ini **tidak**:
-- Menyediakan harga Pi  
-- Mengaitkan nilai Pi dengan mata uang fiat  
-- Melakukan transaksi di luar App Platform
+💛 Kredit
+
+Proyek ini dibuat untuk mendukung ekosistem Pi Network dan developer yang membangun ekonomi digital global yang adil dan terbuka.
+
+🪙 Pi is for Utility — Not Speculation
+
+
+---
+
+🔗 Hubungi
+
+Jika menemukan bug, laporkan melalui:
+
+📍 Issues → GitHub: /issues
+📧 security@picommerce.dev (hanya untuk kerentanan keamanan)
 
 
 ---
