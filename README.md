@@ -1,5 +1,4 @@
----
-
+<!-- README.md -->
 
 # PiCommerce Gateway
 
@@ -34,21 +33,36 @@ Proyek ini mengikuti **Pi Platform Developer Guidelines** serta prinsip keamanan
 | Secure Webhook (HMAC SHA256) | ✅ |
 | React Frontend + Vite | ✅ |
 | Laravel 10 API Backend | ✅ |
-| Audit Logging | 🚧 |
-| CI/CD Pipeline (GitHub Actions) | 🚧 |
-| Admin Dashboard | 🚧 |
-| Semantic Versioning + Auto Release | 🚧 |
-| Plugin Mode / Extend API | 🚧 |
+| Audit Logging | 🟡 |
+| CI/CD Pipeline (GitHub Actions) | 🟡 |
+| Admin Dashboard | 🟡 |
+| Semantic Versioning + Auto Release | 🟡 |
+| Plugin Mode / Extend API | 🟡 |
+
+> 🟡 = Dalam pengembangan  
+> 🟢 = Stable  
+> 🔵 = Planned upgrade
 
 ---
 
 ## 🏗 Arsitektur Sistem
 
-Frontend (React + Pi SDK) ↓ REST API (Laravel 10) ↓ Webhook HMAC Verification ↓ Database (MySQL/MariaDB) ↓ Audit Log + Event Bus
+```
+Frontend (React + Pi SDK)
+        ↓
+REST API (Laravel 10)
+        ↓
+Webhook HMAC Verification
+        ↓
+Database (MySQL/MariaDB)
+        ↓
+Audit Log + Event Bus
+```
 
-Dokumentasi lengkap di:  
-📄 `docs/architecture.md`  
-📄 `docs/api-reference.yml`  
+📁 Dokumentasi lengkap tersedia di:
+
+- `docs/architecture.md`
+- `docs/api-reference.yml`
 
 ---
 
@@ -59,178 +73,116 @@ Dokumentasi lengkap di:
 ```sh
 git clone https://github.com/Clawue884/-PiCommerce-Gateway
 cd -PiCommerce-Gateway
-
+```
 
 ---
 
-2️⃣ Install Backend (Laravel)
+### 2️⃣ Backend (Laravel)
 
+```sh
 cd backend
 composer install
 cp .env.example .env
 php artisan migrate
 php artisan serve
-
+```
 
 ---
 
-3️⃣ Install Frontend (React + Vite)
+### 3️⃣ Frontend (React + Vite)
 
+```sh
 cd frontend
 npm install
 npm run dev
-
-
----
-
-🔐 Keamanan
-
-Proyek menggunakan model Zero Trust + Defense-In-Depth.
-
-Keamanan mencakup:
-
-HTTPS Only
-
-Anti-replay timestamp
-
-Webhook signature validation
-
-CSP strict mode
-
-NO sensitive data stored locally
-
-
-Detail lengkap: SECURITY.md
-
-> ⚠️ Catatan Penting:
-Proyek ini tidak mengklaim harga Pi, tidak menetapkan nilai fiat, dan hanya memproses transaksi melalui Pi App Platform resmi.
-
-
-
+```
 
 ---
 
-🧪 Testing
+## 🔐 Keamanan
 
-Layer	Framework
+Proyek ini menerapkan sistem keamanan **Zero Trust Model** seperti:
 
-Backend	PHPUnit / Pest
-Frontend	Jest / Vitest
-Integration	Playwright
-Security	Bandit + Secret Scanner
+- HTTPS only
+- Anti-replay timestamp validation
+- HMAC signature verification
+- Secret rotation policy
+- CSP Security headers
 
+Detail keamanan: `SECURITY.md`
 
-Jalankan:
+⚠️ Proyek ini **tidak menetapkan harga atau nilai fiat Pi.**  
+Sistem hanya mengikuti standar developer resmi Pi Network.
 
+---
+
+## 🧪 Testing
+
+```sh
 npm test
 php artisan test
+```
 
+| Layer | Framework |
+|-------|-----------|
+| Backend | PHPUnit / Pest |
+| Frontend | Jest / Vitest |
+| Integration | Playwright |
+| Security | Secret Scanner |
 
 ---
 
-⚙️ CI/CD
+## ⚙️ CI/CD
 
-Pipeline mencakup:
+GitHub Actions mencakup:
 
-Build
+- Build & Lint
+- Unit Test
+- Secret Scan
+- Auto Release (Semantic Versioning)
 
-Lint
+File workflow ada di:
 
-Unit Test
-
-Secret Scan
-
-Security Audit
-
-Auto-Release (Semantic Versioning)
-
-
-Workflow ada di:
-
+```
 .github/workflows/ci.yml
 .github/workflows/release.yml
-
-
----
-
-🧰 Teknologi yang Digunakan
-
-Pi SDK (Official)
-
-React + Vite
-
-Laravel 10 + PHP 8.1+
-
-MySQL / MariaDB
-
-Docker + Nginx
-
-Github Actions CI/CD
-
-
+```
 
 ---
 
-🤝 Kontribusi
+## 📌 Roadmap
 
-Kontribusi terbuka untuk developer Pi Network.
-
-Silakan baca:
-
-CONTRIBUTING.md
-
-CODE_OF_CONDUCT.md
-
-
+| Tahap | Status |
+|-------|--------|
+| v1.0 — Payment Core | 🟢 |
+| v1.2 — Dashboard Admin | 🟡 |
+| v2.0 — Multi-Merchant + Plugin API | 🔵 |
 
 ---
 
-📌 Roadmap
+## 🤝 Kontribusi
 
-Tahap	Status
+Kontribusi terbuka.  
+Sebelum commit, baca:
 
-v1.0 — Payment Core	🟢 Rilis
-v1.2 — Dashboard Admin	🟡 On Development
-v2.0 — Plugin API + Multi-Merchant	🔵 Planned
-
-
+📄 `CONTRIBUTING.md`  
+📄 `CODE_OF_CONDUCT.md`
 
 ---
 
-📄 Lisensi
+## 📄 Lisensi
 
-Proyek dirilis di bawah lisensi:
-
-MIT License — Free for Personal and Commercial Use
-
-
----
-
-⭐ Status Proyek
-
-> Stage: Public Beta
-Community-maintained and actively improving.
-
-
-
+```
+MIT License — Open for personal & commercial use.
+```
 
 ---
 
-💛 Kredit
+### 🔗 Kontak
 
-Proyek ini dibuat untuk mendukung ekosistem Pi Network dan developer yang membangun ekonomi digital global yang adil dan terbuka.
-
-🪙 Pi is for Utility — Not Speculation
-
+Issues & request: `/issues`  
+Security Report (Private): `security@picommerce.dev`
 
 ---
 
-🔗 Hubungi
-
-Jika menemukan bug, laporkan melalui:
-
-📍 Issues → GitHub: /issues
-📧 security@picommerce.dev (hanya untuk kerentanan keamanan)
-
-
----
+> 🪙 *“Building decentralized commerce infrastructure for the Pi economy.”*
