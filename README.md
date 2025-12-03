@@ -165,6 +165,13 @@ File workflow ada di:
 | v1.2 — Dashboard Admin | 🟡 |
 | v2.0 — Multi-Merchant + Plugin API | 🔵 |
 
+Milestone	Version	Target
+
+Phase 1 — API Stable	v1.1.0	3-6 weeks
+Phase 2 — Dashboard UI	v1.2.0	Pending
+Phase 3 — Marketplace Mode	v2.0.0	Future
+Phase 4 — Official Pi Network Certification	v3.0.0	Future
+
 ---
 
 ## 🤝 Kontribusi
