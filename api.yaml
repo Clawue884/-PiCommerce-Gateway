@@ -1,0 +1,399 @@
+---
+
+# 2) OpenAPI 3.1 — `/docs/api.yaml`  
+Salin blok YAML berikut ke file `docs/api.yaml`. Ini mencakup endpoint pembayaran, PO, webhook verification, auth, response JSON contoh, dan kode error.
+
+```yaml
+openapi: 3.1.0
+info:
+  title: PiCo Developer Platform API
+  version: "1.0.0"
+  description: |
+    OpenAPI 3.1 description untuk PiCo Developer Platform.
+    Termasuk endpoint pembayaran, PO (Proof-of-Ownership) verification,
+    webhook verification, dan autentikasi Pi user.
+servers:
+  - url: https://api.pico.dev/v1
+    description: Production
+  - url: https://staging-api.pico.dev/v1
+    description: Staging
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    piApiKey:
+      type: apiKey
+      in: header
+      name: X-Pi-ApiKey
+    piSignature:
+      type: apiKey
+      in: header
+      name: X-Pi-Signature
+  schemas:
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          example: "ERR-400-INVALID_PAYLOAD"
+        message:
+          type: string
+          example: "Payload tidak valid: field 'amount' harus > 0"
+        details:
+          type: object
+          additionalProperties: true
+    PaymentRequest:
+      type: object
+      required:
+        - amount
+        - currency
+        - merchant_id
+        - return_url
+      properties:
+        amount:
+          type: number
+          format: double
+          example: 10.5
+        currency:
+          type: string
+          example: "USD"
+        merchant_id:
+          type: string
+          example: "merchant_abc123"
+        metadata:
+          type: object
+          description: "Arbitrary merchant metadata (order id, notes)."
+        return_url:
+          type: string
+          format: uri
+          example: "https://merchant.example.com/checkout/complete"
+    PaymentResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "pay_01F7XYZ"
+        status:
+          type: string
+          enum: [pending, completed, failed, canceled]
+          example: "pending"
+        amount:
+          type: number
+          example: 10.5
+        currency:
+          type: string
+          example: "USD"
+        checkout_url:
+          type: string
+          format: uri
+          example: "https://pay.pico.dev/checkout/pay_01F7XYZ"
+    PORequest:
+      type: object
+      required: [user_id, payload, signature]
+      properties:
+        user_id:
+          type: string
+          example: "pi_user_123"
+        payload:
+          type: object
+          description: "Data yang ditandatangani (contoh: nonce, timestamp, message)"
+        signature:
+          type: string
+          description: "Signature ED25519 atau HMAC dari payload"
+    POResponse:
+      type: object
+      properties:
+        valid:
+          type: boolean
+          example: true
+        user_id:
+          type: string
+          example: "pi_user_123"
+        verified_at:
+          type: string
+          format: date-time
+          example: "2025-12-05T07:00:00Z"
+    WebhookEvent:
+      type: object
+      required: [event, data, id, timestamp]
+      properties:
+        id:
+          type: string
+          example: "evt_01F7WX"
+        event:
+          type: string
+          example: "payment.completed"
+        timestamp:
+          type: string
+          format: date-time
+        data:
+          type: object
+          description: "Payload event"
+    StandardResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: "OK"
+
+paths:
+  /api/auth/pi:
+    post:
+      summary: Verifikasi autentikasi Pi user (signature based)
+      tags: [auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [user_id, signed_message]
+              properties:
+                user_id:
+                  type: string
+                  example: "pi_user_123"
+                signed_message:
+                  type: string
+                  description: "Base64 signature/packed message dari Pi Auth SDK"
+      responses:
+        "200":
+          description: "Token diterbitkan"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                    example: "eyJhbGciOi..."
+                  expires_in:
+                    type: integer
+                    example: 3600
+                  token_type:
+                    type: string
+                    example: "Bearer"
+        "400":
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /api/payments:
+    post:
+      summary: Buat permintaan pembayaran (checkout)
+      tags: [payments]
+      security:
+        - bearerAuth: []
+        - piApiKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentRequest"
+      responses:
+        "201":
+          description: "Payment created"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaymentResponse"
+        "400":
+          description: "Invalid payload"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    get:
+      summary: List / filter payments (opsional - admin/merchant)
+      tags: [payments]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: merchant_id
+          in: query
+          schema:
+            type: string
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [pending, completed, failed, canceled]
+      responses:
+        "200":
+          description: "List payments"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PaymentResponse"
+
+  /api/payments/{payment_id}:
+    get:
+      summary: Ambil detail payment
+      tags: [payments]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: payment_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: "Payment detail"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaymentResponse"
+        "404":
+          description: "Payment not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /api/po/verify:
+    post:
+      summary: Verifikasi Proof-of-Ownership (PO-SDK)
+      tags: [po]
+      security:
+        - bearerAuth: []
+        - piSignature: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PORequest"
+      responses:
+        "200":
+          description: "PO verified"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/POResponse"
+        "400":
+          description: "Invalid signature or request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: "Unauthorized (missing or invalid API key)"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /api/webhook:
+    post:
+      summary: Endpoint webhook (verify signature)
+      tags: [webhook]
+      security: []   # webhook uses header signature instead of bearer
+      parameters:
+        - name: X-Pi-Signature
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: X-Pi-Timestamp
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WebhookEvent"
+      responses:
+        "200":
+          description: "Webhook accepted"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StandardResponse"
+        "400":
+          description: "Invalid payload or timestamp"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: "Invalid signature"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /api/payments/{payment_id}/refund:
+    post:
+      summary: Buat refund untuk suatu payment (merchant admin)
+      tags: [payments]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: payment_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount:
+                  type: number
+                  example: 10.5
+                reason:
+                  type: string
+      responses:
+        "200":
+          description: "Refund processed"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StandardResponse"
+        "400":
+          description: "Invalid refund request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+# Reusable examples (error codes)
+x-error-codes:
+  - code: "ERR-400-INVALID_PAYLOAD"
+    message: "Payload tidak valid"
+  - code: "ERR-401-AUTH"
+    message: "Autentikasi gagal / token expired"
+  - code: "ERR-403-FORBIDDEN"
+    message: "Akses ditolak"
+  - code: "ERR-404-NOT_FOUND"
+    message: "Data tidak ditemukan"
+  - code: "ERR-500-INT"
+    message: "Kesalahan server internal"
+
+tags:
+  - name: auth
+    description: "Autentikasi Pi user"
+  - name: payments
+    description: "Endpoint untuk flow pembayaran dan refund"
+  - name: po
+    description: "PO-SDK dan Proof-of-Ownership verification"
+  - name: webhook
+    description: "Webhook endpoints untuk events"
