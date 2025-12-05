@@ -77,6 +77,31 @@ Audit Log + Event Bus
 
 ### 1️⃣ Clone Repository
 
+## 🚀 Instalasi Lengkap
+
+### 1️⃣ Clone Repository
+
+```bash
+git clone https://github.com/username/project.git
+cd project
+
+cd backend
+cp .env.example .env
+composer install
+php artisan key:generate
+
+DB_HOST=localhost
+DB_PORT=3306
+DB_DATABASE=project
+DB_USERNAME=root
+DB_PASSWORD=
+
+JWT_SECRET=your-secret-key
+
+php artisan migrate --seed
+
+php artisan migrate --seed
+
 ```sh
 git clone https://github.com/Clawue884/-PiCommerce-Gateway
 cd -PiCommerce-Gateway
