@@ -1,180 +1,103 @@
----
+# SECURITY.md
 
-🔐 Security Policy
-
-📌 Supported Versions
-
-Proyek ini menggunakan pendekatan keamanan bertingkat. Hanya versi berikut yang menerima pembaruan keamanan resmi:
-
-Version	Status
-
-main (development)	🟡 Under review
-Stable Release (v1.x.x)	🟢 Supported
-Legacy (v0.x.x)	🔴 No longer supported
-
-
-Jika Anda menggunakan versi yang tidak lagi didukung, harap upgrade sesegera mungkin.
-
+## Ringkasan
+Dokumen ini menjelaskan prosedur pelaporan kerentanan, kebijakan pengungkapan tanggung jawab, praktik pengamanan yang dianjurkan, dan proses respons insiden untuk proyek **PiCo Developer Platform**. Tujuan: membuat proyek yang audit-ready, kompatibel dengan standar PCT, dan aman untuk integrasi pihak ketiga.
 
 ---
 
-🛡 Reporting a Vulnerability
+## Kontak Pelaporan Kerentanan (Responsible Disclosure)
+Jika Anda menemukan kerentanan keamanan, tolong laporkan secepatnya ke:
+- Email: `security@pico.dev`
+- Opsi aman (PGP): `PGP key fingerprint: <MASUKKAN_FINGERPRINT_PGP_DI_SINI>`
+- Jika ingin anonim atau alternatif: buat isu privat di GitHub (template `security/`) atau kirim pesan ke Slack/ Mattermost tim security (lihat README internal).
 
-Kami sangat menghargai kontribusi Anda dalam menjaga keamanan proyek ini.
-Jika Anda menemukan celah keamanan, jangan membuat issue publik.
-
-Gunakan salah satu metode aman berikut:
-
-📧 Email: security@[domain-proyek-anda].com
-📨 PGPPubKey: (Opsional tambahkan jika ada)
-🔏 Severity ratings follow: CVSS v3.1 Standard
-
-Harap sertakan:
-
-Deskripsi singkat kerentanan
-
-Langkah untuk mereplikasi
-
-Lingkungan sistem (OS, versi aplikasi, konfigurasi)
-
-Dampak yang mungkin terjadi
-
-Saran mitigasi (jika ada)
-
-
-Kami berkomitmen untuk membalas dalam:
-
-Severity	Response Time	Fix ETA
-
-Critical	⏱ 24 hours	1–7 days
-High	⏱ 48 hours	3–14 days
-Medium	⏱ 5 days	7–30 days
-Low	⏱ 7–14 days	30–90 days
-
-
+**Kami berkomitmen menanggapi laporan dalam 72 jam kerja.**  
+Jika ada laporan kritikal (RCE, exfiltration, private key leak), tandai sebagai `CRITICAL` pada subjek email.
 
 ---
 
-🔒 Security Best Practices for Contributors
-
-Jika Anda berkontribusi pada proyek ini, Anda WAJIB mengikuti standar keamanan berikut:
-
-✔ Do
-
-Gunakan HTTPS di semua endpoint API
-
-Gunakan environment variables (.env), bukan hard-coded secrets
-
-Pastikan dependency telah di-scan menggunakan:
-
-
-npm audit
-composer audit
-yarn audit
-cargo audit
-pip audit
-
-(Sesuaikan dengan teknologi proyek)
-
-Gunakan commit signed GPG jika memungkinkan:
-
-
-git commit -S -m "Your signed commit message"
-
-Ikuti OWASP Top 10 + SANS CWE Guidelines
-
-
-❌ Do Not
-
-Jangan pernah mengunggah:
-
-Password, API Keys, JWT secrets
-
-Private Keys
-
-Database dump atau credentials
-
-
-Jangan mem-bypass mekanisme keamanan tanpa approval
-
-
+## Policy & Timeline Tanggapan
+- Acknowledgement: dalam 72 jam kerja.
+- Triage & Klasifikasi: 3 hari kerja setelah acknowledgement.
+- Mitigasi sementara / patch: prioritas tinggi dalam 7 hari kerja untuk issue kritikal, 14 hari untuk high, 30 hari untuk medium/low.
+- Disclosure publik: hanya setelah patch tersedia atau sesuai kesepakatan dengan pelapor.
 
 ---
 
-🧪 Security Testing Guidelines
-
-Semua kontribusi harus melalui:
-
-Static Application Security Testing (SAST)
-
-Dependency Security Scanning
-
-Dynamic Application Security Testing (DAST) (optional for release)
-
-Penetration Testing Before Official Release
-
-
-Tools rekomendasi:
-
-Category	Tools
-
-SAST	SonarQube, CodeQL, Semgrep
-Dependency Audit	Snyk, NPM Audit, GitHub Dependabot
-DAST	OWASP ZAP, Burp Suite
-Secret Scanner	TruffleHog, Gitleaks
-
-
+## Severity Classification (contoh)
+- **CRITICAL** — Remote code execution, private key leak, full DB exfiltration, or supply-chain compromise.
+- **HIGH** — Authentication bypass, major privilege escalation, funds manipulation.
+- **MEDIUM** — Logic bugs that may lead to partial exposure or denial of service for subset user.
+- **LOW** — Minor info disclosure, UI issues, best-practice violations.
+- **INFO** — Harapan fitur, docs typo, non-security-related bugs.
 
 ---
 
-🔏 Responsible Disclosure
-
-Jika Anda menemukan celah keamanan dan melaporkannya secara benar, Anda akan mendapatkan penghargaan berupa:
-
-🏅 Hall of Fame Contributor (Security)
-📜 Certificate of Responsible Disclosure
-(optional: ⭐ Bounty Reward jika program bug bounty aktif)
-
-Kami menghormati peneliti keamanan yang beretika.
-
+## Cara Melaporkan (Minimal Info yang Dibutuhkan)
+1. Deskripsi singkat dan langkah reproduksi (step-by-step) dengan perintah dan payload contoh.  
+2. Dampak yang teramati (contoh: jumlah accounts, potensi kerugian).  
+3. Versi perangkat lunak / commit hash.  
+4. Bukti konsep (PoC) terbatas — jangan menyertakan exploit yang dapat dieksekusi di publik tanpa koreksi.  
+5. Kontak reporter untuk follow-up.
 
 ---
 
-📜 Legal
-
-Dengan berkontribusi atau melakukan penelitian keamanan pada repo ini, Anda setuju bahwa:
-
-Tidak melakukan eksploitasi terhadap data pengguna nyata
-
-Tidak menjual, menjadikan senjata, atau menyalahgunakan kerentanan
-
-Tidak melakukan pelanggaran hukum siber lokal maupun internasional
-
-
+## Kebijakan Pengungkapan
+- Jangan mempublikasikan sebelum perbaikan atau izin tim.
+- Jika pelapor ingin publikasi bersama, lakukan koordinasi timeline mitigasi.
+- Kami menghargai laporan yang etis dan akan memberikan pengakuan (opsional) jika pelapor setuju.
 
 ---
 
-🤝 Commitment
-
-Kami berkomitmen menyediakan sistem yang:
-
-Aman
-
-Terukur
-
-Terdesentralisasi (jika terkait blockchain)
-
-Sesuai standar industri keamanan modern
-
-
-Keamanan adalah tanggung jawab bersama.
-
+## Praktik Pengembangan Aman (Checklist)
+- **Secrets:** Jangan commit API keys/private keys ke repo. Gunakan secret manager (GitHub Secrets, Vault).
+- **Dependency management:** Gunakan scanning dependency (Dependabot, Snyk) dan update rutin (minor/patch setiap minggu; major tiap sprint).
+- **Static Analysis:** Jalankan ESLint/TSLint, Bandit (Python), CodeQL di pipeline CI. Fail build on high-severity alerts.
+- **Dynamic Scanning:** Jalankan DAST pada staging (OWASP ZAP) sebelum produksi.
+- **Container security:** Scan images (Trivy), gunakan minimal base images, sign images.
+- **Secrets in CI logs:** Mask secrets, rotate keys saat terjadi eksposur.
 
 ---
 
-🧩 Last Updated: {{tanggal update saat ini}}
-
-(Anda dapat memperbarui tanggal setiap versi rilis)
-
+## CI/CD & GitHub Actions
+- Semua PR wajib lulus:
+  - Unit tests & integration tests,
+  - Linting,
+  - CodeQL scan (atau SAST setara),
+  - Dependency scan,
+  - Container image scan (jika ada).
+- Proteksi branch `main`: force push disabled, require 1–2 review approvals, CI success required.
 
 ---
+
+## Runtime / Infrastruktur
+- **Authentication**: OAuth2 / JWT short lived (default access token expiry ≤ 1 jam). Use refresh tokens securely.
+- **Rate limiting**: implement rate limiting per IP & per API key.
+- **Logging & Monitoring**: centralize logs (ELK/Datadog), enable alerting untuk abnormal activity (spike tx, failed auth).
+- **Backup & Recovery**: regular backup database, test restore tiap 90 hari.
+- **Network security**: use WAF, limit admin endpoints via IP allowlist / VPN.
+
+---
+
+## API Security Best Practices
+- Validate dan sanitize semua input (server-side).
+- HMAC / signature verification untuk webhook & PO proofs. Tidak cukup hanya bearer token.
+- Reject unsigned requests or expired timestamps. Gunakan `X-Pi-Timestamp` + `X-Pi-Signature`.
+- Use strict CORS policy for browser endpoints.
+- Enforce TLS 1.2+ with strong ciphers.
+
+---
+
+## Webhook Handling (Keamanan Khusus)
+- Validasi signature (HMAC SHA256) pada setiap webhook.
+- Gunakan replay-protection: reject requests jika `timestamp` lebih dari ±5 menit.
+- Simpan event idempotency keys untuk menghindari duplikat pemrosesan.
+
+---
+
+## Kode Tertentu (Contoh HMAC Validation)
+> Contoh pseudocode:
+```text
+signature = HMAC_SHA256(secret, timestamp + '.' + body)
+if signature != header['X-Pi-Signature'] -> reject 401
+if abs(now - timestamp) > 5 minutes -> reject 400
