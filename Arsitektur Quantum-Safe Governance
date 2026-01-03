@@ -1,0 +1,22 @@
+┌───────────────────────────────┐
+│ DAO Members (Humans)          │
+│ - Identity Hash (QS)          │
+└──────────────┬────────────────┘
+               │ Vote (Symbolic)
+┌──────────────▼────────────────┐
+│ Quantum-Safe Symbolic Engine  │
+│ - Policy Logic                │
+│ - Risk Algebra                │
+│ - Constraint Proof            │
+└──────────────┬────────────────┘
+               │ Recommendation
+┌──────────────▼────────────────┐
+│ AI Policy Oracle (Off-chain)  │
+│ - Narrative analysis only     │
+└──────────────┬────────────────┘
+               │ Hash Commitment
+┌──────────────▼────────────────┐
+│ DAO Enforcement Layer         │
+│ - Immutable rules             │
+│ - On-chain execution          │
+└───────────────────────────────┘
