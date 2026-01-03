@@ -1,0 +1,6 @@
+pi_coin/
+├── src/
+│   ├── lib.rs          # Entry contract
+│   ├── storage.rs      # State & persistence
+│   ├── governance.rs   # DAO governance logic
+│   └── error.rs        # Error definitions
