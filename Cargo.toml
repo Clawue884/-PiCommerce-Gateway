@@ -1,0 +1,35 @@
+[workspace.metadata.pi.network]
+name = "Pi Network"
+symbol = "PI"
+layer = "L1"
+network_type = "permissioned-mainnet"
+status = "open-mainnet"
+launch_phase = "Mainnet (Enclosed → Open)"
+
+consensus = "SCP"
+consensus_model = "Federated Byzantine Agreement"
+base_protocol = "Stellar-derived"
+protocol_family = "stellar-core-compatible"
+
+smart_contracts = true
+vm = "Soroban-compatible"
+contract_language = "Rust (no_std)"
+wasm = true
+
+account_model = "account-based"
+fee_model = "low-fee / fixed"
+inflation = false
+
+identity = "KYC-bound"
+wallet_model = "custodial-assisted + non-custodial"
+
+interoperability = "limited"
+bridge_support = false
+
+governance = "core-team-led"
+dao_native = false
+
+token_supply = "fixed"
+token_release = "migration-based"
+
+remarks = "Metadata only. Not an official Pi Core Team repository."
