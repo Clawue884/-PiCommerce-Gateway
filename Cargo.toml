@@ -33,3 +33,33 @@ token_supply = "fixed"
 token_release = "migration-based"
 
 remarks = "Metadata only. Not an official Pi Core Team repository."
+
+[package]
+name = "pi-coin-soroban"
+version = "1.0.0-pi"
+edition = "2021"
+rust-version = "1.89.0"
+description = "Pi Network compatible Soroban smart contract with quantum-safe verification"
+license = "Apache-2.0"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+soroban-sdk = "23.4.0"
+
+[features]
+default = []
+pi_network = []
+
+[workspace.metadata.pi.network]
+name = "Pi Network"
+symbol = "PI"
+layer = "L1"
+network_type = "permissioned-mainnet"
+status = "open-mainnet"
+consensus = "SCP"
+vm = "Soroban"
+contract_language = "Rust (no_std)"
+governance = "core-team-led"
+remarks = "Metadata only. Not an official Pi Core Team repository."
