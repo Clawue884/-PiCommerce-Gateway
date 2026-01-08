@@ -63,3 +63,75 @@ vm = "Soroban"
 contract_language = "Rust (no_std)"
 governance = "core-team-led"
 remarks = "Metadata only. Not an official Pi Core Team repository."
+
+
+
+#############################################
+# PiCommerce Gateway — Rust Workspace
+# Protocol alignment: SCP / Stellar v23
+#############################################
+
+[workspace]
+members = [
+    "crates/pi-core",
+    "crates/pi-payment",
+    "crates/pi-webhook",
+    "crates/pi-audit",
+]
+
+resolver = "2"
+
+# === WORKSPACE PACKAGE (ALA STELLAR UPSTREAM) ===
+[workspace.package]
+version = "1.1.0"
+edition = "2021"
+rust-version = "1.89.0"
+license = "MIT"
+authors = ["PiCommerce Gateway Contributors"]
+repository = "https://github.com/Clawue884/PiCommerce-Gateway"
+description = "Pi Network payment gateway core aligned with SCP protocol v23"
+
+# =================================================
+# WORKSPACE DEPENDENCIES
+# Representing Protocol Upgrade v19 → v23
+# =================================================
+[workspace.dependencies]
+
+# --- SCP / XDR (Protocol v23 compatible) ---
+stellar-xdr = "23.4.1"        # ⬅ represents protocol v23
+stellar-strkey = "0.0.9"
+
+# --- SOROBAN RUNTIME (v23 toolchain) ---
+soroban-env-common = "23.4.1"
+soroban-env-host = "23.4.1"
+
+# --- CRYPTO & PAYMENT SECURITY ---
+ed25519-dalek = "2.1"
+sha2 = "0.10"
+hmac = "0.12"
+rand = "0.8"
+hex = "0.4"
+
+# --- DATA / SERIALIZATION ---
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+uuid = { version = "1.6", features = ["v4", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }
+
+# --- ERROR, LOGGING, AUDIT ---
+thiserror = "1.0"
+anyhow = "1.0"
+tracing = "0.1"
+tracing-subscriber = "0.3"
+
+#############################################
+# FEATURES
+#############################################
+[workspace.metadata.features]
+default = ["payment-core"]
+
+# Core A2U payment flow (Pi SDK compatible)
+payment-core = []
+
+# Optional: Soroban simulation / tooling only
+soroban-sim = ["soroban-env-host", "soroban-env-common"]
